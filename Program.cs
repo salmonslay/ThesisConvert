@@ -67,11 +67,10 @@ namespace ThesisConvert
                         i++;
                     }
 
-                    if (author != LineAuthor.Unknown)
+                    if (author != LineAuthor.Unknown) // Only update last if we have a new author
                         lastAuthor = author;
                 }
-
-
+                
                 // Write the transcript to a file
                 string fileName = $"{Path.GetTempPath()}{_pseudonym}.html";
                 Console.WriteLine($"Transcribed {i} lines to {fileName}. Opening...");
@@ -82,8 +81,8 @@ namespace ThesisConvert
             catch (Exception e)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(e + "\n\nRestarting...\n");
                 Console.ResetColor();
+                Console.WriteLine(e + "\n\nRestarting...\n");
 
                 return true;
             }
@@ -93,6 +92,7 @@ namespace ThesisConvert
 
         private LineAuthor GetLineAuthor(string line)
         {
+            // This regex matches Discord message headers (e.g. "Salmon — 12:34 PM"). PM/AM is optional.
             if (new Regex($@"^{Regex.Escape(_interviewer)} — .+(?:\d\d) ?(?:(?:P|A)M)?$").IsMatch(line))
                 return LineAuthor.Interviewer;
             if (new Regex($@"^{Regex.Escape(_interviewee)} — .+(?:\d\d) ?(?:(?:P|A)M)?$").IsMatch(line))
