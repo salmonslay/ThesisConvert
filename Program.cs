@@ -73,7 +73,7 @@ namespace ThesisConvert
 
 
                 // Write the transcript to a file
-                string fileName = $"{_pseudonym}.html";
+                string fileName = $"{Path.GetTempPath()}{_pseudonym}.html";
                 Console.WriteLine($"Transcribed {i} lines to {fileName}. Opening...");
 
                 File.WriteAllText(fileName, html.GetHtml());
